@@ -1,0 +1,249 @@
+{{define "story-args-editor-content"}}
+<style>
+.story-args-editor {
+  
+  padding: var(--space-3);
+  border-top: 1px solid var(--sage-7);
+  
+  background-color: var(--sage-2);
+  color: var(--sage-12);
+  overflow-y: auto; 
+  box-sizing: border-box;
+}
+
+.story-args-editor-header { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.story-args-editor h4 {
+  margin-top: 0;
+  margin-bottom: 0; 
+  font-size: var(--font-size-4);
+  color: var(--sage-12);
+  font-weight: var(--font-weight-bold);
+}
+
+.arg-control {
+  margin-bottom: var(--space-3); 
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
+.arg-control label, .form-label-text { 
+  
+  margin-bottom: var(--space-1); 
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-2);
+  color: var(--sage-11);
+}
+
+.arg-control input[type="text"],
+.arg-control input[type="number"],
+.arg-control select,
+.arg-control textarea.input { 
+  flex-grow: 1;
+  padding: var(--space-1-5) var(--space-2); 
+  width: 100%; 
+  box-sizing: border-box;
+  border: 1px solid var(--sage-7);
+  border-radius: var(--radius-2);
+  background-color: var(--sage-1);
+  color: var(--sage-12);
+}
+
+.arg-control--checkbox {
+    flex-direction: row; 
+    align-items: center;
+}
+
+.arg-control--checkbox input[type="checkbox"] {
+  margin-right: var(--space-2); 
+  
+}
+
+.arg-control small {
+    font-size: var(--font-size-1);
+    color: var(--sage-10);
+    margin-top: var(--space-1);
+}
+
+.story-args-editor .arg-control span { 
+  font-style: italic;
+  color: var(--sage-10);
+}
+</style>
+  {{if .SelectedStoryArgs}}
+    <mach-form target="main"> 
+      <form method="GET" action="{{.CurrentPath}}" class="story-args-editor-form">
+        <div class="story-args-editor">
+          <div class="story-args-editor-header">
+            <h4>Args</h4>
+            <mach-noscript-only>
+              <button type="submit" class="button button--neutral button--size-1">Update Args</button>
+            </mach-noscript-only>
+          </div>
+
+          {{if .SelectedComponent.Variants}}
+            {{$selectedVariant := index .SelectedComponent.Variants 0}}
+            {{range $i, $variant := .SelectedComponent.Variants}}
+              {{if $variant.IsSelected}}
+                {{$selectedVariant = $variant}}
+              {{end}}
+            {{end}}
+            
+            {{range $key, $val := .SelectedStoryArgs}}
+              {{$id := printf "ssr-arg-%s" $key}}
+              {{$type := "text"}}
+              {{$checked := false}}
+              {{$value := printf "%v" $val}}
+              {{$isHTML := false}}
+              {{$hasArgtypes := false}}
+              {{$argType := ""}}
+              
+              {{if $selectedVariant.ArgTypes}}
+                {{$hasArgtypes = true}}
+                {{if index $selectedVariant.ArgTypes $key}}
+                  {{$argTypeInfo := index $selectedVariant.ArgTypes $key}}
+                  {{$argType = $argTypeInfo.Type}}
+                  
+                  {{if eq $argType "boolean"}}
+                    {{$type = "checkbox"}}
+                    {{if $val}}{{$checked = true}}{{end}}
+                    {{$value = "true"}}
+                  {{else if eq $argType "number"}}
+                    {{$type = "number"}}
+                  {{else if eq $argType "string"}}
+                    {{$type = "text"}}
+                  {{else if eq $argType "html"}}
+                    {{$type = "textarea"}}
+                    {{$isHTML = true}}
+                  {{end}}
+                {{end}}
+              {{end}}
+              
+              {{if not $hasArgtypes}}
+                {{$goType := printf "%T" $val}}
+                {{if eq $goType "bool"}}
+                  {{$type = "checkbox"}}
+                  {{if $val}}{{$checked = true}}{{end}}
+                  {{$value = "true"}} 
+                {{else if or (eq $goType "int") (eq $goType "int64") (eq $goType "float64") (eq $goType "float32") }}
+                  {{$type = "number"}}
+                {{else if eq $goType "string"}}
+                  {{$type = "text"}}
+                {{else if or (eq $goType "html.template") (eq $goType "template.HTML") }}
+                  {{$type = "textarea"}}
+                  {{$isHTML = true}}
+                  {{$value = $val}} 
+                {{end}}
+              {{end}}
+
+              {{if $isHTML}}
+                <div class="arg-control">
+                  {{template "form-label" (dict "ID" $id "LabelText" $key)}}
+                  <textarea id="{{$id}}" name="{{$key}}" class="input" rows="3">{{$value}}</textarea>
+                  <small>(HTML content - may require careful input)</small>
+                </div>
+              {{else if eq $type "checkbox"}}
+                <div class="arg-control arg-control--checkbox">
+                    {{template "form-input" (dict
+                        "ID" $id
+                        "Label" $key
+                        "Type" $type
+                        "Value" $value 
+                        "Checked" $checked
+                        "Name" $key
+                        "LabelClass" "" 
+                        "InputClass" "" 
+                        "ArgControlClass" "" 
+                        "Disabled" false
+                    )}}
+                </div>
+              {{else}}
+                {{template "form-input" (dict
+                  "ID" $id
+                  "Label" $key
+                  "Type" $type
+                  "Value" $value
+                  "Checked" $checked 
+                  "Name" $key
+                  "LabelClass" ""
+                  "InputClass" "input" 
+                  "ArgControlClass" "arg-control" 
+                  "Disabled" false
+                )}}
+              {{end}}
+            {{end}}
+          {{else}}
+            {{range $key, $val := .SelectedStoryArgs}}
+              {{$id := printf "ssr-arg-%s" $key}}
+              {{$type := "text"}}
+              {{$checked := false}}
+              {{$value := printf "%v" $val}}
+              {{$isHTML := false}}
+
+              {{$goType := printf "%T" $val}}
+              {{if eq $goType "bool"}}
+                {{$type = "checkbox"}}
+                {{if $val}}{{$checked = true}}{{end}}
+                {{$value = "true"}} 
+              {{else if or (eq $goType "int") (eq $goType "int64") (eq $goType "float64") (eq $goType "float32") }}
+                {{$type = "number"}}
+              {{else if eq $goType "string"}}
+                {{$type = "text"}}
+              {{else if or (eq $goType "html.template") (eq $goType "template.HTML") }}
+                {{$type = "textarea"}}
+                {{$isHTML = true}}
+                {{$value = $val}} 
+              {{end}}
+
+              {{if $isHTML}}
+                <div class="arg-control">
+                  {{template "form-label" (dict "ID" $id "LabelText" $key)}}
+                  <textarea id="{{$id}}" name="{{$key}}" class="input" rows="3">{{$value}}</textarea>
+                  <small>(HTML content - may require careful input)</small>
+                </div>
+              {{else if eq $type "checkbox"}}
+                <div class="arg-control arg-control--checkbox">
+                    {{template "form-input" (dict
+                        "ID" $id
+                        "Label" $key
+                        "Type" $type
+                        "Value" $value 
+                        "Checked" $checked
+                        "Name" $key
+                        "LabelClass" "" 
+                        "InputClass" "" 
+                        "ArgControlClass" "" 
+                        "Disabled" false
+                    )}}
+                </div>
+              {{else}}
+                {{template "form-input" (dict
+                  "ID" $id
+                  "Label" $key
+                  "Type" $type
+                  "Value" $value
+                  "Checked" $checked 
+                  "Name" $key
+                  "LabelClass" ""
+                  "InputClass" "input" 
+                  "ArgControlClass" "arg-control" 
+                  "Disabled" false
+                )}}
+              {{end}}
+            {{end}}
+          {{end}}
+        </div>
+      </form>
+    </mach-form>
+  {{else}}
+    <div class="story-args-editor">
+      <p>(No arguments for this story, or arguments are not available.)</p>
+    </div>
+  {{end}}
+{{end}} 

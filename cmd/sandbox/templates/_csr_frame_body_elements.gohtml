@@ -1,0 +1,14 @@
+{{define "_csr_frame_body_elements"}}
+<div id="csr-content-root">
+    {{if .IsFallback}}
+        <p>Loading component information...</p>
+    {{else}}
+        <p>Loading story...</p>
+    {{end}}
+</div>
+
+<script id="sandbox-config" type="application/json">
+    {{.SandboxConfigJSON}}
+</script>
+<script type="module" src="{{.SandboxScriptToLoad}}"></script>
+{{end}} 

@@ -1,0 +1,55 @@
+{{define "_document_head"}}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{.Title}} - Component Playground</title>
+    <style>
+      
+
+      .registry-root {
+        all:unset;
+        padding: var(--space-5);
+        color: var(--sage-12);
+        overflow-y: auto;
+        width: 100%;
+        height: 100%;
+      }
+
+      @keyframes fade-out {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/static/styles/global.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "preact": "/static/modules/preact.js",
+          "preact/hooks": "/static/modules/preact.js",
+          "maplibre-gl": "/static/modules/maplibre/maplibre-gl.js",
+          "pmtiles": "/static/modules/pmtiles/pmtiles.js",
+          "htm": "/static/modules/preact.js",
+          "htm/preact": "/static/modules/preact.js",
+          "@preact/signals": "/static/modules/preact.js",
+          "@preact/signals-core": "/static/modules/preact.js",
+          "preact/compat": "/static/modules/preact-compat.js",
+          "preact-custom-element": "/static/modules/preact-custom-element/index.js",
+          "classnames": "/static/modules/classnames/classnames.js"
+        }
+      }
+    </script>
+</head>
+{{end}} 

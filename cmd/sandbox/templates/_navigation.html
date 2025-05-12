@@ -1,0 +1,96 @@
+{{define "navigation-content"}}
+<style>
+  .sidebar-nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-nav__item {
+    margin-bottom: var(--space-2);
+  }
+
+  .sidebar-nav__group {
+    border: 1px solid var(--sage-5);
+    border-radius: var(--radius-2);
+    overflow: hidden;
+  }
+
+  .sidebar-nav__title {
+    padding: var(--space-2) var(--space-3);
+    font-weight: 500;
+    cursor: pointer;
+    background-color: var(--sage-3);
+    transition: background-color 0.2s ease;
+  }
+
+  .sidebar-nav__title:hover {
+    background-color: var(--sage-4);
+  }
+
+  .sidebar-nav__list {
+    list-style-type: none;
+    padding: var(--space-2) 0;
+    margin: 0;
+  }
+
+  .sidebar-nav__link {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    color: var(--sage-11);
+    text-decoration: none;
+    border-radius: var(--radius-1);
+    transition: background-color 0.2s ease;
+  }
+
+  .sidebar-nav__link:hover {
+    background-color: var(--sage-3);
+  }
+
+  .sidebar-nav__link--active {
+    background-color: var(--sage-4);
+    color: var(--sage-12);
+    font-weight: 500;
+  }
+
+  .sidebar-nav__empty {
+    color: var(--sage-9);
+    font-style: italic;
+    padding: var(--space-2);
+  }
+</style>
+<ul id="component-nav" class="sidebar-nav">
+  {{range $component := .Components}}
+  <li class="sidebar-nav__item">
+    <details
+      name="component-group-accordion"
+      {{if
+      .IsSelected}}open{{end}}
+      data-component-name="{{$component.Name}}"
+      class="sidebar-nav__group"
+    >
+      <summary class="component-title sidebar-nav__title">
+        {{$component.Title}}
+      </summary>
+      <ul class="sidebar-nav__list">
+        {{range .Variants}}
+        <li>
+          <mach-link target="main">
+            <a
+              href="/sandbox/{{$component.Name}}/{{.Key}}?renderMode={{$.RenderMode}}"
+              class="sidebar-nav__link {{if .IsSelected}}sidebar-nav__link--active{{end}}"
+              >{{.Title}}</a
+            >
+          </mach-link>
+        </li>
+        {{else}}
+        <li class="sidebar-nav__empty">No variants found.</li>
+        {{end}}
+      </ul>
+    </details>
+  </li>
+  {{else}}
+  <li class="sidebar-nav__empty">No components found.</li>
+  {{end}}
+</ul>
+{{end}}

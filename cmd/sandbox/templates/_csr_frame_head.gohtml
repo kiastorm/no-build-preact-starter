@@ -1,0 +1,39 @@
+{{define "_csr_frame_head"}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandbox Frame</title>
+<link rel="stylesheet" href="/static/styles/global.css" />
+<style>
+
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: auto;
+    background-color: var(--sage-1);
+    color: var(--sage-12);
+    font-family: var(--default-font-family);
+  }
+  #csr-content-root {
+    padding: var(--space-5);
+    height: 100%;
+    box-sizing: border-box;
+  }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "preact": "/static/modules/preact.js",
+      "preact/hooks": "/static/modules/preact.js",
+      "maplibre-gl": "/static/modules/maplibre/maplibre-gl.js",
+      "pmtiles": "/static/modules/pmtiles/pmtiles.js",
+      "htm": "/static/modules/preact.js",
+      "htm/preact": "/static/modules/preact.js",
+      "@preact/signals": "/static/modules/preact.js",
+      "@preact/signals-core": "/static/modules/preact.js",
+      "preact/compat": "/static/modules/preact-compat.js",
+      "preact-custom-element": "/static/modules/preact-custom-element/index.js",
+      "classnames": "/static/modules/classnames/classnames.js"
+    }
+  }
+</script>
+{{end}} 
