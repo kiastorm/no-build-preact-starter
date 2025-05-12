@@ -1,0 +1,45 @@
+.sandbox-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--sage-3);
+  border-bottom: 1px solid var(--sage-6);
+  min-height: 48px; /* Ensures a minimum height for visibility */
+  box-sizing: border-box;
+}
+
+.toolbar-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--sage-12);
+}
+
+.component-name {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-4);
+}
+
+.story-key {
+  font-size: var(--font-size-2);
+  color: var(--sage-11);
+  background-color: var(--sage-5);
+  padding: var(--space-0-5) var(--space-1-5);
+  border-radius: var(--radius-2);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* Specificity for buttons if needed, though direct Button component props are better */
+.sandbox-toolbar .button--variant-neutral {
+  /* background-color: var(--sage-4); */
+  /* border-color: var(--sage-7); */
+}
+
+.sandbox-toolbar .button--variant-neutral:hover {
+  /* background-color: var(--sage-5); */
+}

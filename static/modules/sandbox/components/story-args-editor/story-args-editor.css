@@ -1,0 +1,45 @@
+.story-args-editor {
+  height: 100%;
+  padding: var(--space-3);
+  border-top: 1px solid var(--sage-7);
+  margin-top: var(--space-5);
+  background-color: var(--sage-2);
+  color: var(--sage-12);
+}
+
+.story-args-editor h4 {
+  margin-top: 0;
+  font-size: var(--font-size-4);
+  color: var(--sage-12);
+  font-weight: var(--font-weight-bold);
+}
+
+.arg-control {
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+}
+
+.arg-control label {
+  min-width: 120px;
+  margin-right: var(--space-3);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-2);
+  color: var(--sage-11);
+}
+
+.arg-control input[type="text"],
+.arg-control input[type="number"],
+.arg-control select {
+  flex-grow: 1;
+  padding: var(--space-1) var(--space-2);
+}
+
+.arg-control input[type="checkbox"] {
+  margin-right: var(--space-1);
+}
+
+.story-args-editor .arg-control span {
+  font-style: italic;
+  color: var(--sage-10);
+}
